@@ -2,6 +2,37 @@ import express from 'express';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /list:
+ *   get:
+ *     summary: List all the animals
+ *     description: Returns a list of all the animals, optionally sorted
+ *     tags:
+ *       - animals
+ *     parameters:
+ *       - in: query
+ *         name: sort
+ *         type: string
+ *         required: false
+ *         enum:
+ *           - yes
+ *           - no
+ *     responses:
+ *       200:
+ *         description: List of animals
+ *         schema:
+ *           type: object
+ *           properties:
+ *             animals:
+ *               type: array
+ *               description: all the animals
+ *               items:
+ *                 type: string
+ */
+
+
+
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
