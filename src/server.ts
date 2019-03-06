@@ -7,26 +7,25 @@ const app = express();
 
 function auth(req, res, next) {
     console.log(req.header);
-    let authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
     console.log(JSON.stringify(authHeader));
 
+    const error = new Error('You are not authenticated!');
+    error['status'] = 401;
+
     if (!authHeader) {
-        let error = new Error('You are not authenticated!');
-        error['status'] = 401;
         return next(error);
     }
 
-    let auth = new Buffer (authHeader.split(' ')[1], 'base64').toString().split(':');
-    var user = auth[0];
-    var password = auth[1];
+    const authData = new Buffer (authHeader.split(' ')[1], 'base64').toString().split(':');
+    const username = authData[0];
+    const password = authData[1];
 
-    if (user === 'admin' && password === 'password') {
+    if (username === 'admin' && password === 'password') {
         return next();
     }
 
-    let error = new Error('You are not authenticated!');
-    error['status'] = 401;
     return next(error);
 
 
@@ -37,8 +36,8 @@ app.use(auth);
 
 app.use((error, req, res, next) => {
    res.writeHead(error.status || 500, {
+       'Content-Type': 'text/plain',
        'WWW-Authenticate': 'Basic',
-       'Content-Type': 'text/plain'
    });
 
    res.end(error.message);
@@ -67,4 +66,5 @@ app.listen(3000, () => console.log('Example app listening on port 3000!'));
 // route authentication
 
 // dockerize project (docker compose)
-// proto buff
+// unit testing
+// message queue communication between micro services
