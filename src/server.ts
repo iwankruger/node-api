@@ -2,10 +2,13 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import user from './controllers/user';
 import swaggerSpec from './swaggerConfiguration';
+import passport from 'passport';
+import {Strategy as LocalStrategy } from 'passport-local';
+import * as bodyParser from 'body-parser';
 
 const app = express();
 
-function auth(req, res, next) {
+/*function auth(req, res, next) {
     console.log(req.header);
     const authHeader = req.headers.authorization;
 
@@ -29,10 +32,23 @@ function auth(req, res, next) {
     return next(error);
 
 
-}
+}*/
 
 
-app.use(auth);
+//app.use(auth);
+
+
+app.use(bodyParser.json());
+
+passport.use(new LocalStrategy((username, password, next) => {
+    console.log('debug local strategy ');
+    if (username === 'admin' && password === 'password') {
+        return next(null);
+    }
+
+    return next(null, false);
+}));
+
 
 app.use((error, req, res, next) => {
    res.writeHead(error.status || 500, {
@@ -49,7 +65,7 @@ app.use((error, req, res, next) => {
 //  Connect all our routes to our application
 app.use('/users', user);
 
-app.get('/', (req, res) => {
+app.post('/',  passport.authenticate('local'), (req, res) => {
     res.send('Hello world10!!!');
 });
 
