@@ -40,10 +40,11 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(passport.initialize());
 passport.use(new LocalStrategy((username, password, next) => {
     console.log('debug local strategy ');
     if (username === 'admin' && password === 'password') {
-        return next(null);
+        return next(null, {name: 'name'});
     }
 
     return next(null, false);
@@ -65,7 +66,7 @@ app.use((error, req, res, next) => {
 //  Connect all our routes to our application
 app.use('/users', user);
 
-app.post('/',  passport.authenticate('local'), (req, res) => {
+app.post('/',  passport.authenticate('local', { session: false }), (req, res) => {
     res.send('Hello world10!!!');
 });
 
