@@ -5,6 +5,7 @@ import swaggerSpec from './swaggerConfiguration';
 import passport from 'passport';
 import {Strategy as LocalStrategy } from 'passport-local';
 import * as bodyParser from 'body-parser';
+import * as verify from './verify';
 
 const app = express();
 
@@ -41,14 +42,14 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
-passport.use(new LocalStrategy((username, password, next) => {
+/*passport.use(new LocalStrategy((username, password, next) => {
     console.log('debug local strategy ');
     if (username === 'admin' && password === 'password') {
         return next(null, {name: 'name'});
     }
 
     return next(null, false);
-}));
+}));*/
 
 
 app.use((error, req, res, next) => {
@@ -66,7 +67,7 @@ app.use((error, req, res, next) => {
 //  Connect all our routes to our application
 app.use('/users', user);
 
-app.post('/',  passport.authenticate('local', { session: false }), (req, res) => {
+app.post('/test', verify.verifyOrdinaryUser, (req, res) => {
     res.send('Hello world10!!!');
 });
 

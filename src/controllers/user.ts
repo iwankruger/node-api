@@ -1,4 +1,5 @@
 import express from 'express';
+import * as verify from '../verify';
 
 const router = express.Router();
 
@@ -40,7 +41,12 @@ router.use(function timeLog(req, res, next) {
 });
 
 // define the home page route
-router.get('/', (req, res) => {
+router.get('/', verify.verifyOrdinaryUser, (req, res, next) => {
+    res.send('Users home page');
+});
+
+// define the home page route
+router.post('/', verify.verifyOrdinaryUser, (req, res, next) => {
     res.send('Users home page');
 });
 
