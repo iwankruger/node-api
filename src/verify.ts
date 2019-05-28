@@ -21,15 +21,15 @@ passport.use(new BasicStrategy((username, password, next) => {
     console.log('debug basic strategy ');
     // todo: get verify username and password against database
     if (username === 'admin' && password === 'password') {
-        return next(null, { name: 'name' });
+        return next(null, { username: 'admin', password: 'password' });
     }
 
     return next(null, false);
 
 }));
 
-export let verifyOrdinaryUserLocalStrategy = passport.authenticate('local', { session: false });
-export let verifyOrdinaryUser = passport.authenticate('basic', { session: false });
+export let verifyOrdinaryUserLocal = passport.authenticate('local', { session: false });
+export let verifyOrdinaryUserBasic = passport.authenticate('basic', { session: false });
 
 export const getToken = (username: string, password: string): Promise<string> => {
 
@@ -42,7 +42,7 @@ export const getToken = (username: string, password: string): Promise<string> =>
     return Promise.reject(new Error('Unauthorized'));
 }
 
-export const verifyOrdinaryUserJwtStrategy = (req, res, next) => {
+export const verifyOrdinaryUserJwt = (req, res, next) => {
     console.log('debug jwt strategy ');
     // check header or url parameters or post parameters for token
     let token = req.body.token || req.query.token || req.headers['x-access-token'];

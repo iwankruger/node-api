@@ -25,7 +25,7 @@ app.use((error, req, res, next) => {
 app.use('/users', user);
 
 // todo: this is just for illustration purposes, remove example
-app.post('/test', verify.verifyOrdinaryUser, (req, res) => {
+app.post('/test', verify.verifyOrdinaryUserBasic, (req, res) => {
     res.send('Hello world10!!!');
 });
 

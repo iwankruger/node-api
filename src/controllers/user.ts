@@ -41,12 +41,12 @@ router.use(function timeLog(req, res, next) {
 });
 
 // define the home page route
-router.get('/', verify.verifyOrdinaryUserJwtStrategy, (req, res, next) => {
+router.get('/', verify.verifyOrdinaryUserJwt, (req, res, next) => {
     res.send('Users home page');
 });
 
 // define the home page route
-router.post('/', verify.verifyOrdinaryUser, (req, res, next) => {
+router.post('/', verify.verifyOrdinaryUserBasic, (req, res, next) => {
     res.send('Users home page');
 });
 
@@ -55,11 +55,8 @@ router.get('/about', (req, res) => {
     res.send('About users');
 });
 
-// login user, using jwt
-router.post('/login', (req, res, next) => {
-    if (!req.body.username || !req.body.password) {
-        return res.status(400).json({ error: 'username and password required' });
-    }
+// login user, using local strategy and obtain jwt token
+router.post('/login', verify.verifyOrdinaryUserLocal, (req, res, next) => {
     
     verify.getToken(req.body.username, req.body.password).then((token) => {
         return res.send({ token });
