@@ -1,17 +1,44 @@
-import express from 'express';
-const app = express();
-import user from './controllers/user';
-
+import express, { Request, Response, NextFunction } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json';
+import user from './controllers/user';
+import swaggerSpec from './swaggerConfiguration';
+import passport from 'passport';
+import * as bodyParser from 'body-parser';
+import * as verify from './verify';
 
-//  Connect all our routes to our application
-app.use('/users', user);
+const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello world!!!');
+app.use(bodyParser.json());
+app.use(passport.initialize());
+
+app.use((error, req: Request, res: Response, next: NextFunction) => {
+   res.writeHead(error.status || 500, {
+       'Content-Type': 'text/plain',
+       'WWW-Authenticate': 'Basic',
+   });
+
+   res.end(error.message);
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+//  Connect all our routes to our application
+app.use('/api/users', user);
+
+// todo: this is just for illustration purposes, remove example
+app.post('/test', verify.verifyOrdinaryUserBasic, (req: Request, res: Response, next: NextFunction) => {
+    res.send('Hello world10!!!');
+});
+
+app.use('/api-docs', verify.verifyOrdinaryUserBasic, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
+
+// TODO
+// swagger
+// swagger authentication
+// swagger logo replace (low priority)
+// route authentication
+
+// dockerize project (docker compose)
+// unit testing
+// message queue communication between micro services
