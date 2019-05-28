@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import * as verify from '../verify';
 
 const router = express.Router();
@@ -41,12 +41,12 @@ router.use(function timeLog(req, res, next) {
 });
 
 // define the home page route
-router.get('/', verify.verifyOrdinaryUserJwt, (req, res, next) => {
+router.get('/', verify.verifyOrdinaryUserJwt, (req: Request, res: Response, next: NextFunction) => {
     res.send('Users home page');
 });
 
 // define the home page route
-router.post('/', verify.verifyOrdinaryUserBasic, (req, res, next) => {
+router.post('/', verify.verifyOrdinaryUserBasic, (req: Request, res: Response, next: NextFunction) => {
     res.send('Users home page');
 });
 
@@ -56,7 +56,7 @@ router.get('/about', (req, res) => {
 });
 
 // login user, using local strategy and obtain jwt token
-router.post('/login', verify.verifyOrdinaryUserLocal, (req, res, next) => {
+router.post('/login', verify.verifyOrdinaryUserLocal, (req: Request, res: Response, next: NextFunction) => {
     
     verify.getToken(req.body.username, req.body.password).then((token) => {
         return res.send({ token });
@@ -64,7 +64,6 @@ router.post('/login', verify.verifyOrdinaryUserLocal, (req, res, next) => {
         return res.status(401).send('Unauthorized');
     });
         
-    
 });
 
 export = router;
