@@ -27,6 +27,13 @@ app.post('/test', verify.verifyOrdinaryUser, (req, res) => {
     res.send('Hello world10!!!');
 });
 
+app.post('/login', (req, res) => {
+    console.log('login');
+    const token = verify.getToken({ hello: 'world' });
+
+    res.send({ token });
+});
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));

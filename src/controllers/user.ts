@@ -41,7 +41,7 @@ router.use(function timeLog(req, res, next) {
 });
 
 // define the home page route
-router.get('/', verify.verifyOrdinaryUser, (req, res, next) => {
+router.get('/', verify.verifyOrdinaryUserJwtStrategy, (req, res, next) => {
     res.send('Users home page');
 });
 

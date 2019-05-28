@@ -1,6 +1,10 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { BasicStrategy } from 'passport-http'
+import * as jwt from 'jsonwebtoken';
+
+// todo: store secret key in a secure location
+const JWT_SECRET_KEY = '1234-5678-9012';
 
 passport.use(new LocalStrategy((username, password, next) => {
     console.log('debug local strategy ');
@@ -26,6 +30,36 @@ passport.use(new BasicStrategy((username, password, next) => {
 
 export let verifyOrdinaryUserLocalStrategy = passport.authenticate('local', { session: false });
 export let verifyOrdinaryUser = passport.authenticate('basic', { session: false });
+
+export const getToken = (user) => {
+    return jwt.sign(user, JWT_SECRET_KEY, { expiresIn: 3600 });
+}
+
+export const verifyOrdinaryUserJwtStrategy = (req, res, next) => {
+    console.log('debug jwt strategy ');
+    // check header or url parameters or post parameters for token
+    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if (!token) {
+        var err: any = new Error('No token provided!');
+        err.status = 403;
+        return next(err);
+    }
+
+    // decode token
+    jwt.verify(token, JWT_SECRET_KEY, (error, decoded) => {
+        if (error) {
+            var err: any = new Error('You are not authenticated!');
+            err.status = 401;
+            return next(err);
+        }
+        req.decoded = decoded;
+        return next();
+    });
+
+};
+
+
 
 /*
 todo: remove notes
