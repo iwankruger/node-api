@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { BasicStrategy } from 'passport-http'
 import * as jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
 
 // todo: store secret key in a secure location
 const JWT_SECRET_KEY = '1234-5678-9012';
@@ -42,7 +43,7 @@ export const getToken = (username: string, password: string): Promise<string> =>
     return Promise.reject(new Error('Unauthorized'));
 }
 
-export const verifyOrdinaryUserJwt = (req, res, next) => {
+export const verifyOrdinaryUserJwt = (req: Request, res: Response, next: NextFunction) => {
     console.log('debug jwt strategy ');
     // check header or url parameters or post parameters for token
     let token = req.body.token || req.query.token || req.headers['x-access-token'];

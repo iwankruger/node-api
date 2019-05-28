@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import user from './controllers/user';
 import swaggerSpec from './swaggerConfiguration';
@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
-app.use((error, req, res, next) => {
+app.use((error, req: Request, res: Response, next: NextFunction) => {
    res.writeHead(error.status || 500, {
        'Content-Type': 'text/plain',
        'WWW-Authenticate': 'Basic',
@@ -25,7 +25,7 @@ app.use((error, req, res, next) => {
 app.use('/users', user);
 
 // todo: this is just for illustration purposes, remove example
-app.post('/test', verify.verifyOrdinaryUserBasic, (req, res) => {
+app.post('/test', verify.verifyOrdinaryUserBasic, (req: Request, res: Response, next: NextFunction) => {
     res.send('Hello world10!!!');
 });
 
