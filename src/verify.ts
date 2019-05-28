@@ -36,7 +36,7 @@ export const getToken = (username: string, password: string): Promise<string> =>
 
     // todo: get verify username and password against database
     if (username === 'admin' && password === 'password') {
-        const token = jwt.sign({ username, password }, JWT_SECRET_KEY, { expiresIn: 3600 });
+        const token = jwt.sign({ username }, JWT_SECRET_KEY, { expiresIn: 3600 });
         return Promise.resolve(token);
     }
 
@@ -61,7 +61,7 @@ export const verifyOrdinaryUserJwt = (req: Request, res: Response, next: NextFun
             err.status = 401;
             return next(err);
         }
-        req.decoded = decoded;
+        req['decoded'] = decoded;
         return next();
     });
 
