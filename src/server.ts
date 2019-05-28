@@ -23,15 +23,10 @@ app.use((error, req, res, next) => {
 
 //  Connect all our routes to our application
 app.use('/users', user);
+
+// todo: this is just for illustration purposes, remove example
 app.post('/test', verify.verifyOrdinaryUser, (req, res) => {
     res.send('Hello world10!!!');
-});
-
-app.post('/login', (req, res) => {
-    console.log('login');
-    const token = verify.getToken({ hello: 'world' });
-
-    res.send({ token });
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

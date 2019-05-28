@@ -55,4 +55,19 @@ router.get('/about', (req, res) => {
     res.send('About users');
 });
 
+// login user, using jwt
+router.post('/login', (req, res, next) => {
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).json({ error: 'username and password required' });
+    }
+    
+    verify.getToken(req.body.username, req.body.password).then((token) => {
+        return res.send({ token });
+    }).catch((error) => {
+        return res.status(401).send('Unauthorized');
+    });
+        
+    
+});
+
 export = router;

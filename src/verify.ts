@@ -31,8 +31,15 @@ passport.use(new BasicStrategy((username, password, next) => {
 export let verifyOrdinaryUserLocalStrategy = passport.authenticate('local', { session: false });
 export let verifyOrdinaryUser = passport.authenticate('basic', { session: false });
 
-export const getToken = (user) => {
-    return jwt.sign(user, JWT_SECRET_KEY, { expiresIn: 3600 });
+export const getToken = (username: string, password: string): Promise<string> => {
+
+    // todo: get verify username and password against database
+    if (username === 'admin' && password === 'password') {
+        const token = jwt.sign({ username, password }, JWT_SECRET_KEY, { expiresIn: 3600 });
+        return Promise.resolve(token);
+    }
+
+    return Promise.reject(new Error('Unauthorized'));
 }
 
 export const verifyOrdinaryUserJwtStrategy = (req, res, next) => {
