@@ -2,21 +2,24 @@ import swaggerJSDoc from 'swagger-jsdoc';
 
 // swagger definition
 const swaggerDefinition = {
+    basePath: '/api',
+    host: 'localhost:3000',
     info: {
+        description: 'This document describes the API',
         title: 'API Documentation',
         version: '1.0.0',
-        description: 'This document describes the API',
     },
-    host: 'localhost:3000',
-    basePath: '/api',
+    security: [
+        { basic: [] }, { jwt: [] },
+    ],
     securityDefinitions: {
-        jwt: {
-            type: 'apiKey',
-            name: 'x-access-token',
-            in: 'header'
+        basic: {
+            type: 'basic',
         },
-        basic: { 
-            type: 'basic' 
+        jwt: {
+            in: 'header' ,
+            name: 'x-access-token',
+            type: 'apiKey',
         },
         // todo implement bearer authentication
         // bearerAuth: {
@@ -26,16 +29,12 @@ const swaggerDefinition = {
         //     in: 'header',
         // }
     },
-    security: [
-        { basic: [] }, { jwt: [] }
-    ]
 };
 
 // options for swagger jsdoc
 const options = {
-    swaggerDefinition, // swagger definition
     apis: [`${__dirname}/controllers/*`], // path where API specification are written
-    
+    swaggerDefinition, // swagger definition
 };
 
 // initialize swaggerJSDoc

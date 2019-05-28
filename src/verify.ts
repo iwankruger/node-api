@@ -1,8 +1,8 @@
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import { BasicStrategy } from 'passport-http'
+import { NextFunction, Request, Response  } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
+import { BasicStrategy } from 'passport-http';
+import { Strategy as LocalStrategy } from 'passport-local';
 
 // todo: store secret key in a secure location
 const JWT_SECRET_KEY = '1234-5678-9012';
@@ -41,15 +41,15 @@ export const getToken = (username: string, password: string): Promise<string> =>
     }
 
     return Promise.reject(new Error('Unauthorized'));
-}
+};
 
 export const verifyOrdinaryUserJwt = (req: Request, res: Response, next: NextFunction) => {
     console.log('debug jwt strategy ');
     // check header or url parameters or post parameters for token
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-        var err: any = new Error('No token provided!');
+        const err: any = new Error('No token provided!');
         err.status = 403;
         return next(err);
     }
@@ -57,17 +57,16 @@ export const verifyOrdinaryUserJwt = (req: Request, res: Response, next: NextFun
     // decode token
     jwt.verify(token, JWT_SECRET_KEY, (error, decoded) => {
         if (error) {
-            var err: any = new Error('You are not authenticated!');
+            const err: any = new Error('You are not authenticated!');
             err.status = 401;
             return next(err);
         }
-        req['decoded'] = decoded;
+        const key = 'decoded';
+        req[key] = decoded;
         return next();
     });
 
 };
-
-
 
 /*
 todo: remove notes
@@ -107,7 +106,6 @@ function auth(req, res, next) {
     }
 
     return next(error);
-
 
 }
 app.use(auth);

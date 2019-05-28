@@ -1,9 +1,9 @@
-import express, { Request, Response, NextFunction } from 'express';
+import * as bodyParser from 'body-parser';
+import express, { NextFunction, Request, Response } from 'express';
+import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
 import user from './controllers/user';
 import swaggerSpec from './swaggerConfiguration';
-import passport from 'passport';
-import * as bodyParser from 'body-parser';
 import * as verify from './verify';
 
 const app = express();
@@ -19,7 +19,6 @@ app.use((error, req: Request, res: Response, next: NextFunction) => {
 
    res.end(error.message);
 });
-
 
 //  Connect all our routes to our application
 app.use('/api/users', user);
