@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import * as verify from '../verify';
 
 const router = express.Router();
@@ -32,8 +32,6 @@ const router = express.Router();
  *                 type: string
  */
 
-
-
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
     console.log('Time: ', Date.now());
@@ -57,13 +55,11 @@ router.get('/about', (req, res) => {
 
 // login user, using local strategy and obtain jwt token
 router.post('/login', verify.verifyOrdinaryUserLocal, (req: Request, res: Response, next: NextFunction) => {
-    
     verify.getToken(req.body.username, req.body.password).then((token) => {
         return res.send({ token });
     }).catch((error) => {
         return res.status(401).send('Unauthorized');
     });
-        
 });
 
 export = router;
