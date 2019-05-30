@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  node-api:
+    build:
+      context: ./
+      dockerfile: ./docker/node/Dockerfile
+    environment:
+      NODE_ENV: "development"
+    container_name: node-api
+    volumes:
+      # mount project folder
+      - ./:/app
+      # do not mount node_modules folder
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    #tty: true  
+    command: npm run start:dev
