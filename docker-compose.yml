@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  node-api:
+  node:
     build:
       context: ./
       dockerfile: ./docker/node/Dockerfile
