@@ -16,5 +16,5 @@ export const settings = {
         host: process.env.DB_HOST,
         password: process.env.DB_PASS,
         username: process.env.DB_USER,
-    }
+    },
 };

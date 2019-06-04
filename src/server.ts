@@ -8,7 +8,6 @@ import { getNodeEnv } from './env';
 import swaggerSpec from './swaggerConfiguration';
 import * as verify from './verify';
 
-
 const app = express();
 
 app.use(bodyParser.json());
