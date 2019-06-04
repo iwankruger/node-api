@@ -17,5 +17,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+# Transpile typescript to js
+RUN npm run build-ts
+
 EXPOSE 3000
 CMD [ "npm", "start" ]
