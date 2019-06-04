@@ -2,6 +2,7 @@ import * as bodyParser from 'body-parser';
 import express, { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import swaggerUi from 'swagger-ui-express';
+import { settings } from './config';
 import user from './controllers/user';
 import { getNodeEnv } from './env';
 import swaggerSpec from './swaggerConfiguration';
@@ -27,7 +28,7 @@ app.use('/api/users', user);
 
 // todo: this is just for illustration purposes, remove example
 app.post('/test', verify.verifyOrdinaryUserBasic, (req: Request, res: Response, next: NextFunction) => {
-    res.send('Hello world10!!! ENV = ' + getNodeEnv());
+    res.send('Hello world10!!! ENV = ' + getNodeEnv() + ' settings = ' + settings[getNodeEnv()].password);
 });
 
 app.use('/api-docs', verify.verifyOrdinaryUserBasic, swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -6,6 +6,10 @@ services:
       dockerfile: ./docker/node/Dockerfile
     environment:
       NODE_ENV: "development"
+      DB_NAME: "api"
+      DB_HOST: "db"
+      DB_PASS: "root"
+      DB_USER: "root"
     container_name: node-api
     volumes:
       # mount project folder
