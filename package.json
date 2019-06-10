@@ -45,5 +45,12 @@
     "passport-local": "^1.0.0",
     "swagger-jsdoc": "^3.2.7",
     "swagger-ui-express": "^4.0.2"
+  },
+  "bin": "dist/server.js",
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": [
+      "node_modules/**/*"
+    ]
   }
 }
