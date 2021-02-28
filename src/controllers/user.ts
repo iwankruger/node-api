@@ -63,3 +63,5 @@ router.post('/login', verify.verifyOrdinaryUserLocal, (req: Request, res: Respon
 });
 
 export = router;
+
+// test
